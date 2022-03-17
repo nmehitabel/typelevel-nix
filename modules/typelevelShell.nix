@@ -6,6 +6,14 @@ let
 in
 {
   options.typelevelShell = {
+
+   gcpsdk = {
+      package = mkOption {
+        type = types.package;
+        default = pkgs.google-cloud-sdk;
+      };
+    };
+
     jdk = {
       package = mkOption {
         type = types.package;
@@ -52,10 +60,12 @@ in
             ${bold}[versions]${reset}
 
               Java - ${cfg.jdk.package.version}
+              GCloud Sdk - ${cfg.gcpsdk.package.version}
           '' + optionalString cfg.nodejs.enable "  Node - ${pkgs.nodejs.version}\n";
 
         devshell.packages = [
           cfg.jdk.package
+          cfg.gcpsdk.package
         ] ++ optionals cfg.nodejs.enable [
           pkgs.nodejs
           pkgs.yarn
